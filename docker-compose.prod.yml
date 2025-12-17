@@ -1,0 +1,28 @@
+services:
+  petcare-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://petcare.brunadev.com}
+        NEXT_PUBLIC_API_BASE_PATH: /api/v1
+        NEXT_PUBLIC_APP_NAME: PetCare
+        NEXT_PUBLIC_APP_URL: ${NEXT_PUBLIC_APP_URL:-https://petcare.brunadev.com}
+    container_name: petcare-web-prod
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - gateway_net
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  gateway_net:
+    external: true

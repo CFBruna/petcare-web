@@ -1,0 +1,57 @@
+name: CI Quality Gate
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main, develop]
+
+jobs:
+    quality-check:
+        name: Lint, Type Check & Build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: 📥 Checkout code
+              uses: actions/checkout@v4
+
+            - name: 📦 Install pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 9
+
+            - name: 🟢 Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: ".nvmrc"
+                  cache: "pnpm"
+
+            - name: 🧩 Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: ⚡ Restore Next.js cache
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      ~/.npm
+                      ${{ github.workspace }}/.next/cache
+                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
+                  restore-keys: |
+                      ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
+
+            - name: 🔍 Type Check (TypeScript)
+              run: pnpm exec tsc --noEmit
+
+            - name: 🧹 Lint Check
+              run: pnpm run lint
+
+            - name: 🏗️ Build Check
+              run: pnpm run build
+
+            - name: 📊 Build Summary
+              if: success()
+              run: |
+                  echo "✅ All quality checks passed!"
+                  echo "- TypeScript: OK"
+                  echo "- ESLint: OK"
+                  echo "- Build: OK"
