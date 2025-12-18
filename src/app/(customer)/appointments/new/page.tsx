@@ -49,13 +49,12 @@ export default function NewAppointmentPage() {
             return;
         }
 
-        const scheduleTime = `${formData.date}T${formData.time}:00`;
-
         try {
             await createAppointment.mutateAsync({
                 petId: parseInt(formData.petId),
                 serviceId: parseInt(formData.serviceId),
-                scheduleTime,
+                scheduleDate: formData.date,
+                scheduleTime: formData.time,
                 notes: formData.notes,
             });
 
