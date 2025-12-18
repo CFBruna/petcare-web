@@ -10,7 +10,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/presentation/components/ui/card";
-import { Heart, Calendar, Package, TrendingUp } from "lucide-react";
+import { Heart, Calendar, Package } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/presentation/components/ui/button";
 

@@ -60,8 +60,8 @@ export default function NewAppointmentPage() {
 
             alert("Agendamento criado com sucesso!");
             router.push("/appointments");
-        } catch (error: any) {
-            alert(`Erro ao criar agendamento: ${error.message}`);
+        } catch (error: unknown) {
+            alert(`Erro ao criar agendamento: ${(error as Error).message}`);
         }
     };
 

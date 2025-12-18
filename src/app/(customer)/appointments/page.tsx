@@ -2,10 +2,10 @@
 
 import Navbar from "@/presentation/components/layouts/Navbar";
 import { useAppointments, useCancelAppointment } from "@/presentation/hooks/useAppointments";
-import { Card, CardContent, CardHeader, CardTitle } from "@/presentation/components/ui/card";
+import { Card, CardContent } from "@/presentation/components/ui/card";
 import { Button } from "@/presentation/components/ui/button";
-import { Calendar, Plus, X } from "lucide-react";
-import Link from "next/link";
+import { Calendar, X } from "lucide-react";
+
 import { formatDateTime } from "@/presentation/lib/utils";
 
 export default function AppointmentsPage() {
@@ -23,7 +23,24 @@ export default function AppointmentsPage() {
         }
     };
 
-    const AppointmentCard = ({ appointment }: { appointment: any }) => (
+    const AppointmentCard = ({
+        appointment,
+    }: {
+        appointment: {
+            id: number;
+            petName: string;
+            service: { name: string };
+            scheduleTime: string;
+            notes?: string;
+            getStatusColor: () => string;
+            getStatusLabel: () => string;
+            canBeCanceled: () => boolean;
+            isPending: () => boolean;
+            isConfirmed: () => boolean;
+            isCompleted: () => boolean;
+            isCanceled: () => boolean;
+        };
+    }) => (
         <Card>
             <CardContent className="p-6">
                 <div className="flex items-start justify-between mb-4">

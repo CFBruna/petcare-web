@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Button } from "@/presentation/components/ui/button";
 import { Input } from "@/presentation/components/ui/input";
@@ -17,7 +16,6 @@ import { useAuth } from "@/presentation/hooks/useAuth";
 import { Heart } from "lucide-react";
 
 export default function LoginPage() {
-    const router = useRouter();
     const { login, loginError } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

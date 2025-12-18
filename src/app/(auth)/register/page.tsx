@@ -16,7 +16,7 @@ import { useAuth } from "@/presentation/hooks/useAuth";
 import { Heart } from "lucide-react";
 
 export default function RegisterPage() {
-    const { register, registerError } = useAuth();
+    const { register } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [formData, setFormData] = useState({
         username: "",
@@ -46,9 +46,10 @@ export default function RegisterPage() {
 
         try {
             await register(formData);
-        } catch (error: any) {
+        } catch (error: unknown) {
             const message =
-                error?.message || "Erro ao criar conta. Verifique os dados e tente novamente.";
+                (error as Error)?.message ||
+                "Erro ao criar conta. Verifique os dados e tente novamente.";
             setErrorMessage(message);
         } finally {
             setIsLoading(false);

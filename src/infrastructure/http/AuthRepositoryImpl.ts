@@ -79,9 +79,10 @@ export class AuthRepositoryImpl implements IAuthRepository {
             }
 
             return this.toDomain(response.customer);
-        } catch (error: any) {
-            if (error.response?.data) {
-                const errors = error.response.data;
+        } catch (error: unknown) {
+            const axiosError = error as { response?: { data?: Record<string, unknown> } };
+            if (axiosError.response?.data) {
+                const errors = axiosError.response.data;
 
                 const errorMessages: string[] = [];
                 for (const [field, messages] of Object.entries(errors)) {
@@ -94,7 +95,8 @@ export class AuthRepositoryImpl implements IAuthRepository {
 
                 throw new Error(errorMessages.join("; "));
             }
-            throw error;
+
+            throw new Error("Erro ao criar conta. Tente novamente.");
         }
     }
 

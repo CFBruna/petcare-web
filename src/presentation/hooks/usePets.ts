@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { petRepository, breedRepository } from "@/infrastructure/http/PetRepositoryImpl";
-import type { Pet, Breed } from "@/core/domain/entities/Pet";
+import type { Breed } from "@/core/domain/entities/Pet";
 import type { CreatePetDTO, UpdatePetDTO } from "@/core/domain/repositories/IPetRepository";
 
 export function usePets() {
