@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     description:
         "Sistema completo de gestão para pet shops com agendamento, vendas, e prontuário de saúde dos pets.",
     keywords: ["pet shop", "veterinária", "agendamento", "pets", "saúde animal"],
+    icons: {
+        icon: "/images/logo.svg",
+    },
 };
 
 export default function RootLayout({
@@ -28,8 +31,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="pt-BR">
-            <body className={`${inter.variable} ${outfit.variable} antialiased`}>
+        <html lang="pt-BR" suppressHydrationWarning>
+            <body
+                className={`${inter.variable} ${outfit.variable} antialiased`}
+                suppressHydrationWarning
+            >
                 <Providers>{children}</Providers>
             </body>
         </html>
