@@ -12,6 +12,7 @@ import {
 import { Button } from "@/presentation/components/ui/button";
 import { ShoppingBag, Package } from "lucide-react";
 import { formatCurrency } from "@/presentation/lib/utils";
+import Image from "next/image";
 
 export default function StorePage() {
     const { data: products, isLoading } = useProducts();
@@ -41,10 +42,12 @@ export default function StorePage() {
                                     <CardHeader>
                                         <div className="aspect-square bg-neutral-100 rounded-lg mb-4 flex items-center justify-center">
                                             {product.image ? (
-                                                <img
+                                                <Image
                                                     src={product.image}
                                                     alt={product.name}
-                                                    className="w-full h-full object-cover rounded-lg"
+                                                    fill
+                                                    className="object-cover rounded-lg"
+                                                    unoptimized
                                                 />
                                             ) : (
                                                 <Package className="h-16 w-16 text-neutral-300" />

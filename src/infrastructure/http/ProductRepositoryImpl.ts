@@ -22,6 +22,18 @@ interface ProductDTO {
     image: string | null;
 }
 
+interface CategoryDTO {
+    id: number;
+    name: string;
+}
+
+interface PaginatedResponse<T> {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: T[];
+}
+
 export class ProductRepositoryImpl implements IProductRepository {
     async findAll(filters?: ProductFilters): Promise<Product[]> {
         let url = API_ENDPOINTS.PRODUCTS;
@@ -36,8 +48,25 @@ export class ProductRepositoryImpl implements IProductRepository {
             url += `?${params.toString()}`;
         }
 
-        const data = await apiClient.get<ProductDTO[]>(url);
-        return data.map(this.toDomain);
+        let allItems: ProductDTO[] = [];
+        let nextUrl: string | null = url;
+
+        while (nextUrl) {
+            const data: PaginatedResponse<ProductDTO> | ProductDTO[] = await apiClient.get<
+                PaginatedResponse<ProductDTO> | ProductDTO[]
+            >(nextUrl);
+
+            if (Array.isArray(data)) {
+                allItems = data;
+                nextUrl = null;
+            } else {
+                const results = data.results || [];
+                allItems = [...allItems, ...results];
+                nextUrl = data.next;
+            }
+        }
+
+        return allItems.map(this.toDomain);
     }
 
     async findById(id: number): Promise<Product | null> {
@@ -76,7 +105,11 @@ export class ProductRepositoryImpl implements IProductRepository {
 
 export class CategoryRepositoryImpl implements ICategoryRepository {
     async findAll(): Promise<Category[]> {
-        return await apiClient.get<Category[]>(API_ENDPOINTS.CATEGORIES);
+        const data = await apiClient.get<PaginatedResponse<CategoryDTO> | CategoryDTO[]>(
+            API_ENDPOINTS.CATEGORIES
+        );
+        const results = Array.isArray(data) ? data : data.results || [];
+        return results.map((dto) => ({ id: dto.id, name: dto.name }));
     }
 }
 

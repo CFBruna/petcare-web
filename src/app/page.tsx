@@ -1,134 +1,298 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, Heart, Calendar, ShoppingBag, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { ShoppingBag, Package } from "lucide-react";
+import { useState, useEffect } from "react";
+import { PublicHeader } from "@/presentation/components/layouts/PublicHeader";
+import { PublicFooter } from "@/presentation/components/layouts/PublicFooter";
+import { useProducts } from "@/presentation/hooks/useProducts";
+import { useCategories } from "@/presentation/hooks/useCategories";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/presentation/components/ui/card";
+import { Button } from "@/presentation/components/ui/button";
+import { formatCurrency } from "@/presentation/lib/utils";
 
 export default function HomePage() {
+    const [mounted, setMounted] = useState(false);
+    const { data: products, isLoading: isLoadingProducts } = useProducts();
+    const { data: categories, isLoading: isLoadingCategories } = useCategories();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return (
+            <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent mb-4"></div>
+                    <p className="text-neutral-600">Carregando loja...</p>
+                </div>
+            </div>
+        );
+    }
+
+    const featuredProducts = products
+        ?.filter((p) => p.hasDiscount())
+        .sort((a, b) => b.getDiscountPercentage() - a.getDiscountPercentage())
+        .slice(0, 5);
+
     return (
-        <div className="min-h-screen">
-            {/* Hero Section */}
-            <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white">
-                <div className="max-w-7xl mx-auto px-4 py-24 md:py-32">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="space-y-8">
-                            <h1 className="text-5xl md:text-6xl font-heading font-bold leading-tight">
-                                Cuidado completo para seu{" "}
-                                <span className="text-secondary-300">melhor amigo</span>
-                            </h1>
-                            <p className="text-xl text-primary-100 leading-relaxed">
-                                Agendamento online, loja de produtos, prontuário de saúde e muito
-                                mais. Tudo em um só lugar para o bem-estar do seu pet.
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <Link
-                                    href="/login"
-                                    className="inline-flex items-center justify-center px-8 py-4 bg-secondary-500 hover:bg-secondary-600 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                                >
-                                    Acessar Sistema
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-lg transition-all border border-white/30"
-                                >
-                                    Criar Conta
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="hidden md:block">
-                            <div className="aspect-square bg-white/10 rounded-3xl backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                                <Heart className="w-32 h-32 text-secondary-300" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div className="min-h-screen bg-neutral-50">
+            {/* Header */}
+            <PublicHeader />
 
-            {/* Services Section */}
-            <section className="py-24 bg-neutral-50">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-neutral-900 mb-4">
-                            Nossos Serviços
-                        </h2>
-                        <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-                            Oferecemos uma gama completa de serviços para o cuidado do seu pet
+            {/* Main Content */}
+            <main className="max-w-7xl mx-auto px-4 py-8 space-y-12">
+                {/* Hero Section */}
+                <section className="bg-primary-900 rounded-2xl p-8 md:p-12 text-white relative overflow-hidden">
+                    <div className="relative z-10 max-w-lg">
+                        <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4">
+                            Tudo para o seu pet ser mais feliz
+                        </h1>
+                        <p className="text-primary-100 mb-8 text-lg">
+                            Rações, brinquedos, acessórios e muito mais com as melhores ofertas.
                         </p>
+                        <Link href="/offers">
+                            <Button
+                                size="lg"
+                                className="bg-white text-primary-900 hover:bg-primary-50 font-semibold"
+                            >
+                                Ver Ofertas
+                            </Button>
+                        </Link>
                     </div>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {/* Service Card 1 */}
-                        <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
-                            <div className="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary-600 transition-colors">
-                                <Calendar className="w-8 h-8 text-primary-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-2xl font-heading font-semibold mb-3 text-neutral-900">
-                                Agendamento Online
-                            </h3>
-                            <p className="text-neutral-600 leading-relaxed">
-                                Agende consultas, banho e tosa com facilidade. Veja horários
-                                disponíveis em tempo real.
-                            </p>
-                        </div>
-
-                        {/* Service Card 2 */}
-                        <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
-                            <div className="w-16 h-16 bg-accent-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent-600 transition-colors">
-                                <Heart className="w-8 h-8 text-accent-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-2xl font-heading font-semibold mb-3 text-neutral-900">
-                                Prontuário de Saúde
-                            </h3>
-                            <p className="text-neutral-600 leading-relaxed">
-                                Histórico completo de vacinas, consultas e tratamentos. Tudo
-                                organizado e acessível.
-                            </p>
-                        </div>
-
-                        {/* Service Card 3 */}
-                        <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
-                            <div className="w-16 h-16 bg-secondary-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-secondary-600 transition-colors">
-                                <ShoppingBag className="w-8 h-8 text-secondary-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-2xl font-heading font-semibold mb-3 text-neutral-900">
-                                Loja de Produtos
-                            </h3>
-                            <p className="text-neutral-600 leading-relaxed">
-                                Ração, brinquedos, acessórios e muito mais. Produtos de qualidade
-                                com preços especiais.
-                            </p>
-                        </div>
+                    {/* Abstract shapes/pattern background */}
+                    <div className="absolute top-0 right-0 w-1/2 h-full opacity-10">
+                        <div className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/4 w-64 h-64 rounded-full bg-white blur-3xl"></div>
+                        <div className="absolute bottom-0 right-1/4 transform translate-y-1/4 w-48 h-48 rounded-full bg-primary-300 blur-2xl"></div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-r from-primary-600 to-accent-600 text-white">
-                <div className="max-w-4xl mx-auto px-4 text-center">
-                    <Sparkles className="w-16 h-16 mx-auto mb-6 text-secondary-300" />
-                    <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                        Pronto para começar?
-                    </h2>
-                    <p className="text-xl text-primary-100 mb-8 leading-relaxed">
-                        Junte-se a centenas de tutores que já confiam no PetCare para o cuidado de
-                        seus pets.
-                    </p>
-                    <Link
-                        href="/register"
-                        className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-700 hover:bg-neutral-50 font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                    >
-                        Criar Conta Gratuita
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                </div>
-            </section>
+                {/* Categories */}
+                <section>
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-heading font-bold text-neutral-900">
+                            Categorias
+                        </h2>
+                        <Link
+                            href="/categories"
+                            className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+                        >
+                            Ver todas
+                        </Link>
+                    </div>
+                    {isLoadingCategories ? (
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                            {[1, 2, 3, 4, 5, 6].map((i) => (
+                                <div
+                                    key={i}
+                                    className="h-32 bg-neutral-100 rounded-lg animate-pulse"
+                                ></div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                            {categories?.map((category) => (
+                                <Link
+                                    key={category.id}
+                                    href={`/products?category=${category.id}`}
+                                    className="group block"
+                                >
+                                    <div className="bg-white border border-neutral-200 rounded-xl p-4 text-center hover:border-primary-500 hover:shadow-md transition-all h-full flex flex-col items-center justify-center gap-3">
+                                        <div className="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center text-primary-600 group-hover:bg-primary-600 group-hover:text-white transition-colors">
+                                            <Package className="h-6 w-6" />
+                                        </div>
+                                        <span className="font-medium text-neutral-900 group-hover:text-primary-700">
+                                            {category.name}
+                                        </span>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+                </section>
+
+                {/* Featured Products Section - Smaller & Compact */}
+                <section>
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-2xl font-heading font-bold text-neutral-900">
+                            Destaques da Semana
+                        </h2>
+                    </div>
+
+                    {isLoadingProducts ? (
+                        <div className="text-center py-8">
+                            <div className="inline-block h-8 w-8 animate-spin rounded-full border-2 border-solid border-primary-600 border-r-transparent mb-2"></div>
+                        </div>
+                    ) : featuredProducts && featuredProducts.length > 0 ? (
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                            {featuredProducts.map((product) => (
+                                <Card
+                                    key={product.id}
+                                    className="flex flex-col border-primary-100 shadow-sm hover:shadow-md transition-shadow"
+                                >
+                                    <div className="relative">
+                                        <div className="aspect-square bg-neutral-100 rounded-t-lg flex items-center justify-center relative overflow-hidden group">
+                                            {product.hasDiscount() && (
+                                                <span className="absolute top-2 right-2 px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded shadow-sm z-10">
+                                                    -{product.getDiscountPercentage()}%
+                                                </span>
+                                            )}
+
+                                            {product.image ? (
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                />
+                                            ) : (
+                                                <div className="relative w-full h-full p-4">
+                                                    <Image
+                                                        src="/images/logo-products.png"
+                                                        alt={product.name}
+                                                        fill
+                                                        className="object-contain opacity-50"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                    <CardContent className="flex-1 p-3">
+                                        <CardTitle className="text-sm line-clamp-2 mb-2 h-10">
+                                            {product.name}
+                                        </CardTitle>
+                                        <div className="space-y-1">
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-xs text-neutral-500 line-through">
+                                                    {formatCurrency(product.price)}
+                                                </span>
+                                            </div>
+                                            <div className="text-lg font-bold text-primary-700">
+                                                {formatCurrency(product.finalPrice)}
+                                            </div>
+                                        </div>
+                                    </CardContent>
+                                    <CardFooter className="p-3 pt-0">
+                                        <Button size="sm" className="w-full gap-2 text-xs h-8">
+                                            <ShoppingBag className="h-3 w-3" />
+                                            Comprar
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center py-8 text-neutral-500 text-sm">
+                            Nenhuma oferta em destaque no momento.
+                        </div>
+                    )}
+                </section>
+
+                {/* All Products Section */}
+                <section>
+                    <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-2xl font-heading font-bold text-neutral-900">
+                            Todos os Produtos
+                        </h2>
+                        <Link
+                            href="/products"
+                            className="text-primary-600 hover:text-primary-700 font-medium text-sm"
+                        >
+                            Ver todos
+                        </Link>
+                    </div>
+                    {products && products.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {products.slice(0, 8).map((product) => (
+                                <Card key={product.id} className="flex flex-col">
+                                    <CardHeader>
+                                        <div className="aspect-square bg-neutral-100 rounded-lg mb-4 flex items-center justify-center relative overflow-hidden group">
+                                            {product.hasDiscount() && (
+                                                <span className="absolute top-2 right-2 px-1.5 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded shadow-sm z-10">
+                                                    -{product.getDiscountPercentage()}%
+                                                </span>
+                                            )}
+                                            {product.image ? (
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                />
+                                            ) : (
+                                                <div className="relative w-full h-full p-6">
+                                                    <Image
+                                                        src="/images/logo-products.png"
+                                                        alt={product.name}
+                                                        fill
+                                                        className="object-contain opacity-50"
+                                                    />
+                                                </div>
+                                            )}
+                                        </div>
+                                        <CardTitle className="text-lg line-clamp-2">
+                                            {product.name}
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="flex-1">
+                                        <p className="text-sm text-neutral-600 line-clamp-2 mb-4">
+                                            {product.description}
+                                        </p>
+                                        <div className="space-y-2">
+                                            {product.hasDiscount() && (
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-sm text-neutral-500 line-through">
+                                                        {formatCurrency(product.price)}
+                                                    </span>
+                                                    <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded">
+                                                        -{product.getDiscountPercentage()}%
+                                                    </span>
+                                                </div>
+                                            )}
+                                            <div className="text-2xl font-bold text-neutral-900">
+                                                {formatCurrency(product.finalPrice)}
+                                            </div>
+                                            <p className={`text-xs ${product.getStockColor()}`}>
+                                                {product.getStockLabel()}
+                                            </p>
+                                        </div>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Button
+                                            className="w-full gap-2"
+                                            disabled={!product.isInStock()}
+                                        >
+                                            <ShoppingBag className="h-4 w-4" />
+                                            {product.isInStock()
+                                                ? "Adicionar ao Carrinho"
+                                                : "Fora de Estoque"}
+                                        </Button>
+                                    </CardFooter>
+                                </Card>
+                            ))}
+                        </div>
+                    ) : (
+                        <Card>
+                            <CardContent className="py-12 text-center">
+                                <ShoppingBag className="h-16 w-16 text-neutral-300 mx-auto mb-4" />
+                                <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                                    Nenhum produto disponível
+                                </h3>
+                                <p className="text-neutral-600">Em breve teremos novos produtos!</p>
+                            </CardContent>
+                        </Card>
+                    )}
+                </section>
+            </main>
 
             {/* Footer */}
-            <footer className="bg-neutral-900 text-neutral-300 py-12">
-                <div className="max-w-7xl mx-auto px-4 text-center">
-                    <p className="text-lg mb-2">© 2025 PetCare. Todos os direitos reservados.</p>
-                    <p className="text-sm text-neutral-500">
-                        Desenvolvido com ❤️ para tutores apaixonados por seus pets
-                    </p>
-                </div>
-            </footer>
+            <PublicFooter />
         </div>
     );
 }
