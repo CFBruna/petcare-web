@@ -52,7 +52,9 @@ export class ProductRepositoryImpl implements IProductRepository {
         let nextUrl: string | null = url;
 
         while (nextUrl) {
-            const data = await apiClient.get<PaginatedResponse<ProductDTO> | ProductDTO[]>(nextUrl);
+            const data: PaginatedResponse<ProductDTO> | ProductDTO[] = await apiClient.get<
+                PaginatedResponse<ProductDTO> | ProductDTO[]
+            >(nextUrl);
 
             if (Array.isArray(data)) {
                 allItems = data;
