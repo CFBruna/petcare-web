@@ -36,11 +36,23 @@ export class ProductRepositoryImpl implements IProductRepository {
             url += `?${params.toString()}`;
         }
 
-        const data = await apiClient.get<any>(url);
+        let allItems: any[] = [];
+        let nextUrl: string | null = url;
 
-        const items = Array.isArray(data) ? data : data.results || [];
+        while (nextUrl) {
+            const data: any = await apiClient.get<any>(nextUrl);
 
-        return items.map(this.toDomain);
+            if (Array.isArray(data)) {
+                allItems = data;
+                nextUrl = null;
+            } else {
+                const results = data.results || [];
+                allItems = [...allItems, ...results];
+                nextUrl = data.next;
+            }
+        }
+
+        return allItems.map(this.toDomain);
     }
 
     async findById(id: number): Promise<Product | null> {
@@ -79,7 +91,8 @@ export class ProductRepositoryImpl implements IProductRepository {
 
 export class CategoryRepositoryImpl implements ICategoryRepository {
     async findAll(): Promise<Category[]> {
-        return await apiClient.get<Category[]>(API_ENDPOINTS.CATEGORIES);
+        const data = await apiClient.get<any>(API_ENDPOINTS.CATEGORIES);
+        return Array.isArray(data) ? data : data.results || [];
     }
 }
 
