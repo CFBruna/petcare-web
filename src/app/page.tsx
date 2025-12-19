@@ -1,132 +1,150 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowRight, Heart, Calendar, ShoppingBag, Sparkles } from "lucide-react";
+import { ShoppingBag, Package, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useProducts } from "@/presentation/hooks/useProducts";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/presentation/components/ui/card";
+import { Button } from "@/presentation/components/ui/button";
+import { formatCurrency } from "@/presentation/lib/utils";
 
 export default function HomePage() {
+    const [mounted, setMounted] = useState(false);
+    const { data: products, isLoading } = useProducts();
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return (
+            <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent mb-4"></div>
+                    <p className="text-neutral-600">Carregando loja...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="min-h-screen">
-            {/* Hero Section */}
-            <section className="relative bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white">
-                <div className="max-w-7xl mx-auto px-4 py-24 md:py-32">
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
-                        <div className="space-y-8">
-                            <h1 className="text-5xl md:text-6xl font-heading font-bold leading-tight">
-                                Cuidado completo para seu{" "}
-                                <span className="text-secondary-300">melhor amigo</span>
-                            </h1>
-                            <p className="text-xl text-primary-100 leading-relaxed">
-                                Agendamento online, loja de produtos, prontuário de saúde e muito
-                                mais. Tudo em um só lugar para o bem-estar do seu pet.
-                            </p>
-                            <div className="flex flex-col sm:flex-row gap-4">
-                                <Link
-                                    href="/login"
-                                    className="inline-flex items-center justify-center px-8 py-4 bg-secondary-500 hover:bg-secondary-600 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                                >
-                                    Acessar Sistema
-                                    <ArrowRight className="ml-2 h-5 w-5" />
-                                </Link>
-                                <Link
-                                    href="/register"
-                                    className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white font-semibold rounded-lg transition-all border border-white/30"
-                                >
-                                    Criar Conta
-                                </Link>
-                            </div>
+        <div className="min-h-screen bg-neutral-50">
+            {/* Header */}
+            <header className="bg-white border-b border-neutral-200 sticky top-0 z-10 shadow-sm">
+                <div className="max-w-7xl mx-auto px-4 py-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Heart className="h-8 w-8 text-primary-600" fill="currentColor" />
+                            <span className="font-heading text-2xl font-bold text-primary-700">
+                                PetCare
+                            </span>
                         </div>
-                        <div className="hidden md:block">
-                            <div className="aspect-square bg-white/10 rounded-3xl backdrop-blur-sm border border-white/20 flex items-center justify-center">
-                                <Heart className="w-32 h-32 text-secondary-300" />
-                            </div>
+                        <div className="flex gap-3">
+                            <Link href="/login">
+                                <Button variant="outline">Entrar</Button>
+                            </Link>
+                            <Link href="/register">
+                                <Button>Criar Conta</Button>
+                            </Link>
                         </div>
                     </div>
                 </div>
-            </section>
+            </header>
 
-            {/* Services Section */}
-            <section className="py-24 bg-neutral-50">
-                <div className="max-w-7xl mx-auto px-4">
-                    <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-heading font-bold text-neutral-900 mb-4">
-                            Nossos Serviços
-                        </h2>
-                        <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-                            Oferecemos uma gama completa de serviços para o cuidado do seu pet
-                        </p>
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-8">
-                        {/* Service Card 1 */}
-                        <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
-                            <div className="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary-600 transition-colors">
-                                <Calendar className="w-8 h-8 text-primary-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-2xl font-heading font-semibold mb-3 text-neutral-900">
-                                Agendamento Online
-                            </h3>
-                            <p className="text-neutral-600 leading-relaxed">
-                                Agende consultas, banho e tosa com facilidade. Veja horários
-                                disponíveis em tempo real.
-                            </p>
-                        </div>
-
-                        {/* Service Card 2 */}
-                        <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
-                            <div className="w-16 h-16 bg-accent-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent-600 transition-colors">
-                                <Heart className="w-8 h-8 text-accent-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-2xl font-heading font-semibold mb-3 text-neutral-900">
-                                Prontuário de Saúde
-                            </h3>
-                            <p className="text-neutral-600 leading-relaxed">
-                                Histórico completo de vacinas, consultas e tratamentos. Tudo
-                                organizado e acessível.
-                            </p>
-                        </div>
-
-                        {/* Service Card 3 */}
-                        <div className="group bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2">
-                            <div className="w-16 h-16 bg-secondary-100 rounded-xl flex items-center justify-center mb-6 group-hover:bg-secondary-600 transition-colors">
-                                <ShoppingBag className="w-8 h-8 text-secondary-600 group-hover:text-white transition-colors" />
-                            </div>
-                            <h3 className="text-2xl font-heading font-semibold mb-3 text-neutral-900">
-                                Loja de Produtos
-                            </h3>
-                            <p className="text-neutral-600 leading-relaxed">
-                                Ração, brinquedos, acessórios e muito mais. Produtos de qualidade
-                                com preços especiais.
-                            </p>
-                        </div>
-                    </div>
+            {/* Main Content */}
+            <main className="max-w-7xl mx-auto px-4 py-8">
+                <div className="mb-8">
+                    <h1 className="text-4xl font-heading font-bold text-neutral-900 mb-2">
+                        Loja de Produtos
+                    </h1>
+                    <p className="text-neutral-600">Encontre tudo para o bem-estar do seu pet</p>
                 </div>
-            </section>
 
-            {/* CTA Section */}
-            <section className="py-24 bg-gradient-to-r from-primary-600 to-accent-600 text-white">
-                <div className="max-w-4xl mx-auto px-4 text-center">
-                    <Sparkles className="w-16 h-16 mx-auto mb-6 text-secondary-300" />
-                    <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6">
-                        Pronto para começar?
-                    </h2>
-                    <p className="text-xl text-primary-100 mb-8 leading-relaxed">
-                        Junte-se a centenas de tutores que já confiam no PetCare para o cuidado de
-                        seus pets.
-                    </p>
-                    <Link
-                        href="/register"
-                        className="inline-flex items-center justify-center px-8 py-4 bg-white text-primary-700 hover:bg-neutral-50 font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl hover:scale-105"
-                    >
-                        Criar Conta Gratuita
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                    </Link>
-                </div>
-            </section>
+                {isLoading ? (
+                    <div className="text-center py-12">
+                        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent mb-4"></div>
+                        <p className="text-neutral-600">Carregando produtos...</p>
+                    </div>
+                ) : products && products.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        {products.map((product) => (
+                            <Card key={product.id} className="flex flex-col">
+                                <CardHeader>
+                                    <div className="aspect-square bg-neutral-100 rounded-lg mb-4 flex items-center justify-center">
+                                        {product.image ? (
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="w-full h-full object-cover rounded-lg"
+                                            />
+                                        ) : (
+                                            <Package className="h-16 w-16 text-neutral-300" />
+                                        )}
+                                    </div>
+                                    <CardTitle className="text-lg line-clamp-2">
+                                        {product.name}
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex-1">
+                                    <p className="text-sm text-neutral-600 line-clamp-2 mb-4">
+                                        {product.description}
+                                    </p>
+                                    <div className="space-y-2">
+                                        {product.hasDiscount() && (
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-sm text-neutral-500 line-through">
+                                                    {formatCurrency(product.price)}
+                                                </span>
+                                                <span className="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-semibold rounded">
+                                                    -{product.getDiscountPercentage()}%
+                                                </span>
+                                            </div>
+                                        )}
+                                        <div className="text-2xl font-bold text-neutral-900">
+                                            {formatCurrency(product.finalPrice)}
+                                        </div>
+                                        <p className={`text-xs ${product.getStockColor()}`}>
+                                            {product.getStockLabel()}
+                                        </p>
+                                    </div>
+                                </CardContent>
+                                <CardFooter>
+                                    <Button
+                                        className="w-full gap-2"
+                                        disabled={!product.isInStock()}
+                                    >
+                                        <ShoppingBag className="h-4 w-4" />
+                                        {product.isInStock()
+                                            ? "Adicionar ao Carrinho"
+                                            : "Fora de Estoque"}
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
+                ) : (
+                    <Card>
+                        <CardContent className="py-12 text-center">
+                            <ShoppingBag className="h-16 w-16 text-neutral-300 mx-auto mb-4" />
+                            <h3 className="text-xl font-semibold text-neutral-900 mb-2">
+                                Nenhum produto disponível
+                            </h3>
+                            <p className="text-neutral-600">Em breve teremos novos produtos!</p>
+                        </CardContent>
+                    </Card>
+                )}
+            </main>
 
             {/* Footer */}
-            <footer className="bg-neutral-900 text-neutral-300 py-12">
+            <footer className="bg-neutral-900 text-neutral-300 py-8 mt-16">
                 <div className="max-w-7xl mx-auto px-4 text-center">
-                    <p className="text-lg mb-2">© 2025 PetCare. Todos os direitos reservados.</p>
-                    <p className="text-sm text-neutral-500">
-                        Desenvolvido com ❤️ para tutores apaixonados por seus pets
-                    </p>
+                    <p className="text-sm">© 2025 PetCare. Todos os direitos reservados.</p>
                 </div>
             </footer>
         </div>

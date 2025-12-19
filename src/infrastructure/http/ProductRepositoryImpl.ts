@@ -36,8 +36,11 @@ export class ProductRepositoryImpl implements IProductRepository {
             url += `?${params.toString()}`;
         }
 
-        const data = await apiClient.get<ProductDTO[]>(url);
-        return data.map(this.toDomain);
+        const data = await apiClient.get<any>(url);
+
+        const items = Array.isArray(data) ? data : data.results || [];
+
+        return items.map(this.toDomain);
     }
 
     async findById(id: number): Promise<Product | null> {
