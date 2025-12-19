@@ -16,7 +16,9 @@ import { ShoppingBag } from "lucide-react";
 import { formatCurrency } from "@/presentation/lib/utils";
 import Image from "next/image";
 
-export default function ProductsPage() {
+import { Suspense } from "react";
+
+function ProductsContent() {
     const searchParams = useSearchParams();
     const categoryId = searchParams.get("category");
     const searchQuery = searchParams.get("search");
@@ -131,5 +133,22 @@ export default function ProductsPage() {
             </main>
             <PublicFooter />
         </div>
+    );
+}
+
+export default function ProductsPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="min-h-screen bg-neutral-50 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-primary-600 border-r-transparent mb-4"></div>
+                        <p className="text-neutral-600">Carregando...</p>
+                    </div>
+                </div>
+            }
+        >
+            <ProductsContent />
+        </Suspense>
     );
 }
