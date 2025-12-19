@@ -40,7 +40,12 @@ class ApiClient {
             (error: AxiosError) => {
                 if (error.response?.status === 401) {
                     if (typeof window !== "undefined") {
-                        window.location.href = "/login";
+                        const currentPath = window.location.pathname;
+                        const isAuthPage = currentPath === "/login" || currentPath === "/register";
+
+                        if (!isAuthPage) {
+                            window.location.href = "/login";
+                        }
                     }
                 }
                 return Promise.reject(error);
