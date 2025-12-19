@@ -147,10 +147,12 @@ export default function HomePage() {
                                             )}
 
                                             {product.image ? (
-                                                <img
+                                                <Image
                                                     src={product.image}
                                                     alt={product.name}
-                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    fill
+                                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    unoptimized
                                                 />
                                             ) : (
                                                 <div className="relative w-full h-full p-4">
@@ -220,10 +222,12 @@ export default function HomePage() {
                                                 </span>
                                             )}
                                             {product.image ? (
-                                                <img
+                                                <Image
                                                     src={product.image}
                                                     alt={product.name}
-                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    fill
+                                                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                                    unoptimized
                                                 />
                                             ) : (
                                                 <div className="relative w-full h-full p-6">
