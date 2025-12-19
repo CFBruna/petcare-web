@@ -1,5 +1,14 @@
 # PetCare - Modern Pet Care Management System
 
+[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js-15.1-black?logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.0-61dafb?logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6?logo=typescript)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8?logo=tailwindcss)](https://tailwindcss.com/)
+[![pnpm](https://img.shields.io/badge/pnpm-9.0-f69220?logo=pnpm)](https://pnpm.io/)
+[![Code Style: Prettier](https://img.shields.io/badge/Code_Style-Prettier-ff69b4?logo=prettier)](https://prettier.io/)
+[![Commits: Conventional](https://img.shields.io/badge/Commits-Conventional-fe5196?logo=conventionalcommits)](https://conventionalcommits.org/)
+
 A comprehensive pet care management platform built with **Next.js 15** and **Django 5**, following **Clean Architecture** and **Domain-Driven Design** principles.
 
 ## 🌟 Features
@@ -235,13 +244,15 @@ npm run test:coverage # Generate coverage report
 - **Clean Architecture** principles
 - **English** for all code (Portuguese only for user-facing UI text)
 
-## 🤝 Contributing
-
-This is a portfolio project by Bruna Menezes. Contributions, issues, and feature requests are welcome!
-
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is **proprietary software**. All rights reserved.
+
+**Copyright (c) 2025 Bruna Menezes**
+
+Unauthorized copying, distribution, or use of this software is strictly prohibited. See the [LICENSE](LICENSE) file for details.
+
+For licensing inquiries, please visit [brunadev.com](https://brunadev.com).
 
 ## 👥 Author
 
@@ -254,5 +265,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **Built with ❤️ using Next.js, TypeScript, and Clean Architecture**
-test
-test
