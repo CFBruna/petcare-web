@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingBag, Package, Menu, X, Search } from "lucide-react";
+import { ShoppingBag, Package } from "lucide-react";
 import { useState, useEffect } from "react";
 import { PublicHeader } from "@/presentation/components/layouts/PublicHeader";
 import { PublicFooter } from "@/presentation/components/layouts/PublicFooter";
