@@ -69,7 +69,7 @@ export class AppointmentRepositoryImpl implements IAppointmentRepository {
 
     async getAvailableSlots(date: string, serviceId: number): Promise<string[]> {
         const data = await apiClient.get<string[]>(
-            `${API_ENDPOINTS.APPOINTMENTS}available-slots/?date=${date}&service_id=${serviceId}`
+            `${API_ENDPOINTS.AVAILABLE_SLOTS}?date=${date}&service_id=${serviceId}`
         );
         return data;
     }

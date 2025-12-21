@@ -5,6 +5,7 @@ import { useAppointments, useCancelAppointment } from "@/presentation/hooks/useA
 import { Card, CardContent } from "@/presentation/components/ui/card";
 import { Button } from "@/presentation/components/ui/button";
 import { Calendar, X } from "lucide-react";
+import Link from "next/link";
 
 import { formatDateTime } from "@/presentation/lib/utils";
 
@@ -94,6 +95,12 @@ export default function AppointmentsPage() {
                                 Gerencie seus compromissos de cuidado com os pets
                             </p>
                         </div>
+                        <Link href="/appointments/new">
+                            <Button className="gap-2">
+                                <Calendar className="h-4 w-4" />
+                                Novo Agendamento
+                            </Button>
+                        </Link>
                     </div>
 
                     {isLoading ? (
@@ -168,6 +175,9 @@ export default function AppointmentsPage() {
                                 <p className="text-neutral-600 mb-6">
                                     Agende um serviço para o seu pet!
                                 </p>
+                                <Link href="/appointments/new">
+                                    <Button>Agendar Serviço</Button>
+                                </Link>
                             </CardContent>
                         </Card>
                     )}
