@@ -61,15 +61,16 @@ export class AppointmentRepositoryImpl implements IAppointmentRepository {
     }
 
     async cancel(id: number): Promise<Appointment> {
-        const data = await apiClient.patch<AppointmentDTO>(`${API_ENDPOINTS.APPOINTMENTS}${id}/`, {
-            status: "CANCELED",
-        });
+        const data = await apiClient.post<AppointmentDTO>(
+            `${API_ENDPOINTS.APPOINTMENTS}${id}/cancel/`,
+            {}
+        );
         return this.toDomain(data);
     }
 
     async getAvailableSlots(date: string, serviceId: number): Promise<string[]> {
         const data = await apiClient.get<string[]>(
-            `${API_ENDPOINTS.APPOINTMENTS}available-slots/?date=${date}&service_id=${serviceId}`
+            `${API_ENDPOINTS.AVAILABLE_SLOTS}?date=${date}&service_id=${serviceId}`
         );
         return data;
     }

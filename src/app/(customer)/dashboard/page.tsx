@@ -124,11 +124,16 @@ export default function DashboardPage() {
                                                 </span>
                                             </div>
                                         ))}
-                                        <Link href="/appointments">
-                                            <Button variant="outline" className="w-full">
-                                                Ver Todos
-                                            </Button>
-                                        </Link>
+                                        <div className="flex gap-2">
+                                            <Link href="/appointments" className="flex-1">
+                                                <Button variant="outline" className="w-full">
+                                                    Ver Todos
+                                                </Button>
+                                            </Link>
+                                            <Link href="/appointments/new" className="flex-1">
+                                                <Button className="w-full">Agendar</Button>
+                                            </Link>
+                                        </div>
                                     </div>
                                 ) : (
                                     <div className="text-center py-8">

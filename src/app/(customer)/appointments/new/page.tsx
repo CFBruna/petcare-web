@@ -1,5 +1,6 @@
 "use client";
 
+import axios, { AxiosError, isAxiosError } from "axios";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Navbar from "@/presentation/components/layouts/Navbar";
@@ -23,11 +24,16 @@ import {
     useCreateAppointment,
 } from "@/presentation/hooks/useAppointments";
 
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/presentation/components/ui/alert";
+
 export default function NewAppointmentPage() {
     const router = useRouter();
     const { data: pets, isLoading: petsLoading } = usePets();
     const { data: services, isLoading: servicesLoading } = useServices();
     const createAppointment = useCreateAppointment();
+
+    const [error, setError] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
         petId: "",
@@ -43,9 +49,10 @@ export default function NewAppointmentPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError(null);
 
         if (!formData.petId || !formData.serviceId || !formData.date || !formData.time) {
-            alert("Por favor, preencha todos os campos obrigatórios");
+            setError("Por favor, preencha todos os campos obrigatórios");
             return;
         }
 
@@ -58,10 +65,28 @@ export default function NewAppointmentPage() {
                 notes: formData.notes,
             });
 
-            alert("Agendamento criado com sucesso!");
             router.push("/appointments");
         } catch (error: unknown) {
-            alert(`Erro ao criar agendamento: ${(error as Error).message}`);
+            let errorMessage = "Ocorreu um erro ao criar o agendamento.";
+
+            if (isAxiosError(error) && error.response?.data) {
+                const data = error.response.data;
+                if (Array.isArray(data)) {
+                    errorMessage = data[0];
+                } else if (typeof data === "object" && data !== null) {
+                    const keys = Object.keys(data);
+                    if (keys.length > 0) {
+                        const firstValue = data[keys[0]];
+                        errorMessage = Array.isArray(firstValue)
+                            ? firstValue[0]
+                            : String(firstValue);
+                    }
+                }
+            } else if (error instanceof Error) {
+                errorMessage = error.message;
+            }
+
+            setError(errorMessage);
         }
     };
 
@@ -258,6 +283,21 @@ export default function NewAppointmentPage() {
                                         rows={4}
                                     />
                                 </div>
+
+                                {error && (
+                                    <Alert
+                                        variant="destructive"
+                                        className="bg-red-50 border-red-200 text-red-900"
+                                    >
+                                        <AlertCircle className="h-4 w-4 text-red-600" />
+                                        <AlertTitle className="text-red-800">
+                                            Erro ao agendar
+                                        </AlertTitle>
+                                        <AlertDescription className="text-red-700">
+                                            {error}
+                                        </AlertDescription>
+                                    </Alert>
+                                )}
 
                                 <div className="flex gap-4">
                                     <Button

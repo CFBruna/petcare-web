@@ -25,6 +25,7 @@ export const API_ENDPOINTS = {
     PETS: `${API_V1_PATH}/pets/pets/`,
     BREEDS: `${API_V1_PATH}/pets/breeds/`,
     APPOINTMENTS: `${API_V1_PATH}/schedule/appointments/`,
+    AVAILABLE_SLOTS: `${API_V1_PATH}/schedule/available-slots/`,
     SERVICES: `${API_V1_PATH}/schedule/services/`,
     HEALTH_RECORDS: `${API_V1_PATH}/health/records/`,
     PRODUCTS: `${API_V1_PATH}/store/products/`,
