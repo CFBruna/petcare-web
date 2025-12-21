@@ -13,7 +13,9 @@ import {
 } from "@/presentation/components/ui/card";
 import { Button } from "@/presentation/components/ui/button";
 import { Label } from "@/presentation/components/ui/label";
-import { ArrowLeft, Clock, DollarSign } from "lucide-react";
+import { Input } from "@/presentation/components/ui/input";
+import { Textarea } from "@/presentation/components/ui/textarea";
+import { ArrowLeft, Calendar, Clock, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { usePets } from "@/presentation/hooks/usePets";
 import {
@@ -63,7 +65,6 @@ export default function NewAppointmentPage() {
                 notes: formData.notes,
             });
 
-            // alert("Agendamento criado com sucesso!"); // Removed alert
             router.push("/appointments");
         } catch (error: unknown) {
             let errorMessage = "Ocorreu um erro ao criar o agendamento.";
@@ -86,7 +87,6 @@ export default function NewAppointmentPage() {
             }
 
             setError(errorMessage);
-            // alert(`Erro: ${errorMessage}`); // Removed alert
         }
     };
 
