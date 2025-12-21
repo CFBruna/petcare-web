@@ -8,12 +8,13 @@ import { Calendar, X } from "lucide-react";
 import Link from "next/link";
 
 import { formatDateTime } from "@/presentation/lib/utils";
+import { Appointment } from "@/core/domain/entities/Appointment";
 
 const AppointmentCard = ({
     appointment,
     onCancel,
 }: {
-    appointment: any;
+    appointment: Appointment;
     onCancel: (id: number) => void;
 }) => (
     <Card>
@@ -80,9 +81,10 @@ export default function AppointmentsPage() {
         try {
             await cancelAppointment.mutateAsync(cancelId);
             alert("Agendamento cancelado com sucesso!");
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { error?: string } } };
             const errorMessage =
-                error.response?.data?.error || "Não foi possível cancelar o agendamento.";
+                err.response?.data?.error || "Não foi possível cancelar o agendamento.";
             alert(errorMessage);
         } finally {
             setCancelId(null);

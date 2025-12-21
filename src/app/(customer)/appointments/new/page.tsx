@@ -13,9 +13,7 @@ import {
 } from "@/presentation/components/ui/card";
 import { Button } from "@/presentation/components/ui/button";
 import { Label } from "@/presentation/components/ui/label";
-import { Input } from "@/presentation/components/ui/input";
-import { Textarea } from "@/presentation/components/ui/textarea";
-import { ArrowLeft, Calendar, Clock, DollarSign } from "lucide-react";
+import { ArrowLeft, Clock, DollarSign } from "lucide-react";
 import Link from "next/link";
 import { usePets } from "@/presentation/hooks/usePets";
 import {
