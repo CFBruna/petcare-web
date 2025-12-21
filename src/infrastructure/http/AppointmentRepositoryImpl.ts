@@ -61,9 +61,10 @@ export class AppointmentRepositoryImpl implements IAppointmentRepository {
     }
 
     async cancel(id: number): Promise<Appointment> {
-        const data = await apiClient.patch<AppointmentDTO>(`${API_ENDPOINTS.APPOINTMENTS}${id}/`, {
-            status: "CANCELED",
-        });
+        const data = await apiClient.post<AppointmentDTO>(
+            `${API_ENDPOINTS.APPOINTMENTS}${id}/cancel/`,
+            {}
+        );
         return this.toDomain(data);
     }
 
